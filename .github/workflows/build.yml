@@ -14,12 +14,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Full TeX Live
-        run: sudo apt-get update && sudo apt-get install -y texlive-full
-      
-      - name: Compile TeX to PDF
-        run: xelatex -interaction=batchmode -halt-on-error -output-directory=. arpa-cv.tex || true
-
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@master
+        with:
+          root_file: arpa-cv.tex
+          working_directory: LaTeX
+      - name: Rename pdf
+        run: mv LaTeX/arpa-cv.tex arpa-cv.tex          
       - name: Upload PDF as an artifact
         uses: actions/upload-artifact@v4
         with:

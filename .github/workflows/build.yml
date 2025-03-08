@@ -18,7 +18,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y texlive-full
       
       - name: Compile TeX to PDF
-        run: xelatex -interaction=nonstopmode -halt-on-error -output-directory=. arpa-cv.tex || true
+        run: xelatex -interaction=batchmode -halt-on-error -output-directory=. arpa-cv.tex || true
 
       - name: Upload PDF as an artifact
         uses: actions/upload-artifact@v4

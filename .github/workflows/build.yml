@@ -1,0 +1,50 @@
+name: Build PDF
+
+on:
+  push:
+    branches:
+      - main  # Change if your main branch has a different name
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+
+      - name: Compile TeX to PDF
+        run: pdflatex -interaction=nonstopmode -halt-on-error -output-directory=. arpa-cv.tex  # Change 'main.tex' to your file name
+
+      - name: Upload PDF as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdf
+          path: main.pdf  # Change if necessary
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download PDF Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-pdf
+
+      - name: Deploy to GitHub Pages
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git checkout --orphan gh-pages
+          git rm -rf .
+          mv main.pdf resume.pdf  # Change if needed
+          git add resume.pdf
+          git commit -m "Deploy compiled PDF"
+          git push -f origin gh-pages

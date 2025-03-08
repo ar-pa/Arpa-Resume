@@ -18,9 +18,7 @@ jobs:
         uses: xu-cheng/latex-action@master
         with:
           root_file: arpa-cv.tex
-          working_directory: LaTeX
-      - name: Rename pdf
-        run: mv LaTeX/arpa-cv.tex arpa-cv.tex          
+          working_directory: .
       - name: Upload PDF as an artifact
         uses: actions/upload-artifact@v4
         with:

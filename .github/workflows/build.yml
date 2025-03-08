@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: compiled-pdf
-          path: main.pdf  # Change if necessary
+          path: arpa-cv.pdf
 
   deploy:
     needs: build

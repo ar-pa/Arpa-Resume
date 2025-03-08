@@ -14,11 +14,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install LaTeX
-        run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+- name: Install LaTeX
+  run: sudo apt-get update && sudo apt-get install -y texlive-xetex texlive-latex-extra texlive-fonts-recommended
 
-      - name: Compile TeX to PDF
-        run: pdflatex -interaction=nonstopmode -halt-on-error -output-directory=. arpa-cv.tex  # Change 'main.tex' to your file name
+- name: Compile TeX to PDF
+  run: xelatex -interaction=nonstopmode -halt-on-error -output-directory=. arpa-cv.tex
 
       - name: Upload PDF as an artifact
         uses: actions/upload-artifact@v4

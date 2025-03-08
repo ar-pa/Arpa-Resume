@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@master
+        uses: dante-ev/latex-action@2024-B
         with:
           root_file: arpa-cv.tex
-          working_directory: .
+          compiler: xelatex
       - name: Upload PDF as an artifact
         uses: actions/upload-artifact@v4
         with:

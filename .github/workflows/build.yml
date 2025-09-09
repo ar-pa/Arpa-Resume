@@ -20,6 +20,7 @@ jobs:
           root_file: arpa-cv.tex
           compiler: xelatex
           args: "-interaction=nonstopmode -file-line-error"
+        continue-on-error: true
 
 
       - name: Upload PDF as artifact

@@ -3,7 +3,7 @@ name: Build PDF
 on:
   push:
     branches:
-      - main  # Change if your main branch has a different name
+      - main
   pull_request:
 
 jobs:
@@ -15,35 +15,38 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compile LaTeX document
-        uses: dante-ev/latex-action@2024-B
+        uses: dante-ev/latex-action@v2
         with:
           root_file: arpa-cv.tex
           compiler: xelatex
-      - name: Upload PDF as an artifact
+
+      - name: Upload PDF as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: compiled-pdf
+          name: arpa-cv
           path: arpa-cv.pdf
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Download PDF Artifact
         uses: actions/download-artifact@v4
         with:
-          name: compiled-pdf
+          name: arpa-cv
+          path: ./public
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
 
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git checkout --orphan gh-pages
-          git rm -rf .
-          mv main.pdf resume.pdf  # Change if needed
-          git add resume.pdf
-          git commit -m "Deploy compiled PDF"
-          git push -f origin gh-pages
+        id: deployment
+        uses: actions/deploy-pages@v4

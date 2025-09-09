@@ -164,6 +164,7 @@
 % All arguments are compulsory
 % #1: Name, #2: Description, #3: Time Period, #4: Location
 \usepackage{environ}
+\usepackage{xstring}
 
 \NewEnviron{subsectionnobullet}[4]{%
     \phantomsection
@@ -171,20 +172,22 @@
     \textbf{#1} \hfill \textit{#3}\newline
     \textit{#2} \hfill \textit{#4}%
     \smallskip
-    % Check if the body contains \item
-    \def\tempbody{\BODY}%
-    \ifx\tempbody\empty
-        % nothing → just print header
-    \else
-        % has something → wrap in list
+    %
+    % check if \item is present in the body
+    \IfSubStr{\BODY}{\item}{%
+        % body contains \item → make list
         \begin{list}{}{%
             \leftmargin=0em \itemindent=0em \labelwidth=0em \labelsep=0em
         }%
         \itemsep -0.7em \vspace{-0.7em}%
         \BODY
         \end{list}%
-    \fi
+    }{%
+        % no \item → just print body directly (likely empty)
+        \BODY
+    }%
 }
+
 
 
 % Define new sectiontable command, which makes a section with a table

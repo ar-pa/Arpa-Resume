@@ -163,30 +163,20 @@
 % Define command for resume subsections with no bullets
 % All arguments are compulsory
 % #1: Name, #2: Description, #3: Time Period, #4: Location
-\usepackage{environ}
-\usepackage{xstring}
-
-\NewEnviron{subsectionnobullet}[4]{%
+\newenvironment{subsectionnobullet}[4]{
     \phantomsection
-    \addcontentsline{toc}{subsection}{#1}%
-    \textbf{#1} \hfill \textit{#3}\newline
-    \textit{#2} \hfill \textit{#4}%
+    \addcontentsline{toc}{subsection}{#1}
+    \textbf{#1} \hfill \textit{#3} \newline
+    \textit{#2} \hfill \textit{#4}
     \smallskip
-    %
-    % check if \item is present in the body
-    \IfSubStr{\BODY}{\item}{%
-        % body contains \item → make list
-        \begin{list}{}{%
-            \leftmargin=0em \itemindent=0em \labelwidth=0em \labelsep=0em
-        }%
-        \itemsep -0.7em \vspace{-0.7em}%
-        \BODY
-        \end{list}%
-    }{%
-        % no \item → just print body directly (likely empty)
-        \BODY
-    }%
+    \begin{list}{}{
+        \leftmargin=0em \itemindent=0em \labelwidth=0em \labelsep=0em
+    }
+    \itemsep -0.7em \vspace{-0.7em}
+}{
+    \end{list}
 }
+
 
 
 
